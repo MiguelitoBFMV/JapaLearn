@@ -1,5 +1,11 @@
-{% extends "base.html" %}
+{% extends "phrases/base.html" %}
 {% block content %}
     <h1>JapaLearn - Ingresa, Traduce, Registra, Consulta</h1>
-    <p>Aquí se verá el centro del proyecto</p>
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="frase_esp" id="frase_esp"></textarea>
+        <button type="submit">Enviar</button>
+
+        <p>{{ frase_esp }}</p>
+    </form>
 {% endblock content %}
