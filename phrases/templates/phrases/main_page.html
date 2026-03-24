@@ -3,9 +3,9 @@
     <h1>JapaLearn - Ingresa, Traduce, Registra, Consulta</h1>
     <form method="POST">
         {% csrf_token %}
-        <textarea name="frase_esp" id="frase_esp"></textarea>
-        <button type="submit">Enviar</button>
-
-        <p>{{ frase_esp }}</p>
+        <textarea name="frase_esp" id="frase_esp">{{frase_esp}}</textarea>
+        <button type="submit" name="action" value="translate">Traducir</button>
+        <button type="submit" name="action" value="clear">Limpiar</button>
+        <p>La frase traducida es: {{ frase_jp }}</p>
     </form>
 {% endblock content %}
