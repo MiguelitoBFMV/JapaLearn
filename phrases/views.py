@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from .services import translate_text
+from .models import Categoria, Frase
 
 def main_page(request):
     frase_esp = ""
     frase_jp = ""
-
+    categoria = Categoria.objects.all()
+    notas = ""
+    categoria_elegida = ""
+    
     if request.method=="POST":
         accion = request.POST.get("action")
 
@@ -14,5 +18,24 @@ def main_page(request):
         elif accion == "clear":
             frase_esp = ""
             frase_jp = ""
+        elif accion == "save":
+            frase_esp = request.POST.get("frase_esp", "")
+            frase_jp = request.POST.get("frase_jp", "")
+            notas = request.POST.get("notas")
+            categoria_elegida = request.POST.get("categoria_id")
+            if frase_esp and frase_jp and categoria_elegida:
+                categoria_elemento = Categoria.objects.get(id=categoria_elegida)
 
-    return render(request, "phrases/main_page.html", {"frase_jp": frase_jp, "frase_esp": frase_esp})
+                Frase.objects.create(
+                    texto_esp = frase_esp,
+                    texto_jp = frase_jp,
+                    categoria = categoria_elemento,
+                    nota = notas
+                )
+
+
+    return render(request, "phrases/main_page.html",
+        {"frase_jp": frase_jp,
+        "frase_esp": frase_esp,
+        "notas": notas,
+        "categorias": categoria})

@@ -7,5 +7,17 @@
         <button type="submit" name="action" value="translate">Traducir</button>
         <button type="submit" name="action" value="clear">Limpiar</button>
         <p>La frase traducida es: {{ frase_jp }}</p>
+        <input type="hidden" name="frase_jp" value={{frase_jp}}>
+
+        <select name="categoria_id" id="categoria_id">
+            {% for categoria in categorias %}
+                <option value={{categoria.id}}>{{categoria.titulo}}</option>
+            {% endfor %}
+        </select>
+        
+        <h4>Nota:</h4>
+        <textarea name="notas">{{ notas }}</textarea>
+
+        <button type="submit" name="action" value="save">Guardar</button>
     </form>
 {% endblock content %}

@@ -13,7 +13,7 @@ class Categoria(models.Model):
 class Frase(models.Model):
     texto_esp = models.TextField()
     texto_jp = models.TextField()
-    categoría = models.ForeignKey(Categoria, on_delete=models.SET(crear_sin_categoria), related_name="Frases")
+    categoria = models.ForeignKey(Categoria, on_delete=models.SET(crear_sin_categoria), related_name="Frases")
     nota = models.TextField(blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
 
