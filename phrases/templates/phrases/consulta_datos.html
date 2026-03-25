@@ -1,0 +1,7 @@
+{% extends "phrases/base.html" %}
+{% block content %}
+    <h1>Consulta los datos registrados</h1>
+    {% for registro in registros %}
+        <p>Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}}</p>
+    {% endfor %}
+{% endblock content %}

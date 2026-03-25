@@ -39,3 +39,9 @@ def main_page(request):
         "frase_esp": frase_esp,
         "notas": notas,
         "categorias": categoria})
+
+
+def consulta_datos(request):
+    registros = Frase.objects.all()
+
+    return render(request, "phrases/consulta_datos.html", {"registros": registros})
