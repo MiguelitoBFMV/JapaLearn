@@ -1,4 +1,5 @@
-from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from django.shortcuts import redirect, render, get_object_or_404
 from .services import translate_text
 from .models import Categoria, Frase
 from django.db.models import Q
@@ -83,3 +84,11 @@ def consulta_datos(request):
 
     
     return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
+
+
+
+def editar_datos(request, registro_id):
+
+    registro_seleccionado = get_object_or_404(Frase, id=registro_id)
+    
+    return render(request, "phrases/editar_datos.html", {"registro": registro_seleccionado })

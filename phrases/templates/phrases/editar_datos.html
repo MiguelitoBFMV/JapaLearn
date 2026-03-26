@@ -1,0 +1,12 @@
+{% extends "phrases/base.html" %}
+{% block content %}
+    <h1>Editando la frase {{registro}}</h1>
+
+    <section>
+        <p>Frase en español: {{registro.texto_esp}}</p>
+        <p>Frase en Japonés: {{registro.texto_jp}}</p>
+        <p>Categoría: {{registro.categoria}}</p>
+        <p>Nota: {{registro.nota}}</p>
+        <p>Fecha del registro: {{registro.fecha}}</p>
+    </section>
+{% endblock content  %}
