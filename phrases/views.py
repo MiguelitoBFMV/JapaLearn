@@ -45,8 +45,14 @@ def consulta_datos(request):
     categoria = Categoria.objects.all()
     registros = Frase.objects.all()
     categoria_id = request.GET.get("filtro_categoria")
+    orden = request.GET.get("orden_elegido", "DESC")
     if categoria_id:
         registros = Frase.objects.filter(categoria=categoria_id)
         categoria_id = int(categoria_id)
-
-    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id})
+    
+    if orden == "ASC":
+        registros = registros.order_by("fecha")
+    elif orden == "DESC":
+        registros = registros.order_by("-fecha")
+    
+    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id, "orden": orden})

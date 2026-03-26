@@ -11,6 +11,13 @@
                 <option value={{categoria.id}} {% if categoria.id == categoria_id %} selected {% endif %}>{{categoria.titulo}}</option>
             {% endfor %}
         </select>
+
+        <select name="orden_elegido">
+            <option value="ASC" {% if "ASC" == orden %} selected {% endif %}>Más antiguos primero</option>
+            <option value="DESC" {% if "DESC" == orden %} selected {% endif %}>Más recientes primero</option>
+        </select>
+
+
         <button type="submit" name="action" value="save">Filtrar</button>
     </form>
     </section>
