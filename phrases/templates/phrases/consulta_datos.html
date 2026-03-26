@@ -17,16 +17,25 @@
             <option value="DESC" {% if "DESC" == orden %} selected {% endif %}>Más recientes primero</option>
         </select>
 
+        <button type="submit" name="action" value="filter">Filtrar</button> |
 
-        <button type="submit" name="action" value="save">Filtrar</button>
+        <input type="text" name="busqueda" value={{valor_buscado}}>&#x1F50D;
+
+        <button type="submit" name="action" value="reset">Limpiar Filtros</button>
+
     </form>
     </section>
 
-    <section>
-        {% for registro in registros %}
-            <p>Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}}</p>
-        {% endfor %}
-    </section>
+        <section>
+            {% for registro in registros %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <p>Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}} | <button type="submit" name="action" value="delete">Eliminar</button></p>
+                    <input type="hidden" name="registro_id" value={{registro.id}}>
+                </form>
+            {% endfor %}
+        </section>
+    
 
     <a href={% url "main_page" %}>Volver a la página principal</a>
 {% endblock content %}

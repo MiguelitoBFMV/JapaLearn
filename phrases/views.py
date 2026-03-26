@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .services import translate_text
 from .models import Categoria, Frase
+from django.db.models import Q
 
 def main_page(request):
     frase_esp = ""
@@ -46,13 +47,39 @@ def consulta_datos(request):
     registros = Frase.objects.all()
     categoria_id = request.GET.get("filtro_categoria")
     orden = request.GET.get("orden_elegido", "DESC")
+    frase_eliminada = ""
+    accion = request.GET.get("action")
+
+    # METHOD POST
+    if request.method=="POST":
+        accion = request.POST.get("action")
+        if accion == "delete":
+            frase_eliminada = request.POST.get("registro_id")
+            Frase.objects.filter(id=frase_eliminada).delete()
+            return redirect("consulta_datos")
+        
+    # METHOD GET   
     if categoria_id:
         registros = Frase.objects.filter(categoria=categoria_id)
         categoria_id = int(categoria_id)
-    
+
+    # Filtro de orden
     if orden == "ASC":
         registros = registros.order_by("fecha")
     elif orden == "DESC":
         registros = registros.order_by("-fecha")
+
+    # Realizar Búsquedas
+    valor_buscado = request.GET.get("busqueda", "")
+
+    if valor_buscado:
+        registros = registros.filter(Q(texto_esp__icontains=valor_buscado) | Q(texto_jp__icontains=valor_buscado) | Q(nota__icontains=valor_buscado))
     
-    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id, "orden": orden})
+    # Limpiar los filtros
+    if accion == "reset":
+        return redirect("consulta_datos")
+
+    
+
+    
+    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
