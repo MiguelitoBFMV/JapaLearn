@@ -1,23 +1,34 @@
 {% extends "phrases/base.html" %}
 {% block content %}
     <h1>JapaLearn - Ingresa, Traduce, Registra, Consulta</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <textarea name="frase_esp" id="frase_esp">{{frase_esp}}</textarea>
-        <button type="submit" name="action" value="translate">Traducir</button>
-        <button type="submit" name="action" value="clear">Limpiar</button>
-        <p>La frase traducida es: {{ frase_jp }}</p>
-        <input type="hidden" name="frase_jp" value={{frase_jp}}>
+    <section>
+        <form method="POST">
+            {% csrf_token %}
+            <div>
+                <textarea name="frase_esp" id="frase_esp">{{frase_esp}}</textarea>
+                <button type="submit" name="action" value="translate">Traducir</button>
+                <button type="submit" name="action" value="clear">Limpiar</button>
+            </div>
 
-        <select name="categoria_id" id="categoria_id">
-            {% for categoria in categorias %}
-                <option value={{categoria.id}}>{{categoria.titulo}}</option>
-            {% endfor %}
-        </select>
-        
-        <h4>Nota:</h4>
-        <textarea name="notas">{{ notas }}</textarea>
+            <div>
+                <p>La frase traducida es: {{ frase_jp }}</p>
+                <input type="hidden" name="frase_jp" value={{frase_jp}}>
 
-        <button type="submit" name="action" value="save">Guardar</button>
-    </form>
+                <select name="categoria_id" id="categoria_id">
+                    <option value="">-----</option>
+                    {% for categoria in categorias %}
+                        <option value={{categoria.id}}>{{categoria.titulo}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <h4>Nota:</h4>
+                <textarea name="notas">{{ notas }}</textarea>
+            </div>
+
+            <button type="submit" name="action" value="save">Guardar</button>
+        </form>
+    </section>
+
 {% endblock content %}

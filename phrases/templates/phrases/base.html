@@ -1,13 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JapaLearn</title>
+    <link rel="stylesheet" href={% static "phrases/styles.css" %}>
 </head>
 <body>
-    <h1>JAPALEARN</h1>
-
+    <header>
+        <h1>JAPALEARN</h1>
+        <a href={% url "consulta_datos" %}>Consultar Frases</a>
+    </header>
+    
     <section>
         {% block content %}{% endblock content %}
     </section>

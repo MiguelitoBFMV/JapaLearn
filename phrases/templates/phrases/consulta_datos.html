@@ -1,7 +1,25 @@
 {% extends "phrases/base.html" %}
 {% block content %}
     <h1>Consulta los datos registrados</h1>
-    {% for registro in registros %}
-        <p>Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}}</p>
-    {% endfor %}
+
+    <section>
+    <h3>Filtrar por categoría:</h3>
+    <form method="GET">
+        <select name="filtro_categoria">
+            <option value="">Sin filtro</option>
+            {% for categoria in categorias %}
+                <option value={{categoria.id}} {% if categoria.id == categoria_id %} selected {% endif %}>{{categoria.titulo}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" name="action" value="save">Filtrar</button>
+    </form>
+    </section>
+
+    <section>
+        {% for registro in registros %}
+            <p>Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}}</p>
+        {% endfor %}
+    </section>
+
+    <a href={% url "main_page" %}>Volver a la página principal</a>
 {% endblock content %}

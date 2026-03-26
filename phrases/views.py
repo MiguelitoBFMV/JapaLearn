@@ -42,6 +42,11 @@ def main_page(request):
 
 
 def consulta_datos(request):
+    categoria = Categoria.objects.all()
     registros = Frase.objects.all()
+    categoria_id = request.GET.get("filtro_categoria")
+    if categoria_id:
+        registros = Frase.objects.filter(categoria=categoria_id)
+        categoria_id = int(categoria_id)
 
-    return render(request, "phrases/consulta_datos.html", {"registros": registros})
+    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id})
