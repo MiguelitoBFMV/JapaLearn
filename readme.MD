@@ -125,7 +125,6 @@ http://127.0.0.1:8000/
 
 ## 🔮 Futuras mejoras
 
-- Sistema de autenticación de usuarios  
-- Mejora del diseño y experiencia de usuario  
-- Integración con más APIs de aprendizaje  
-- Estadísticas de progreso y uso  
+- Mejora del diseño y experiencia de usuario 
+- Implementación de traducción del Japonés al Español (posibilidad)
+- Sistema de autenticación de usuarios  (posibilidad)
