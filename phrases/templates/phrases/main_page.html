@@ -5,7 +5,7 @@
         <form method="POST">
             {% csrf_token %}
             <div>
-                <textarea name="frase_esp" id="frase_esp">{{frase_esp}}</textarea>
+                <textarea name="frase_esp">{{frase_esp}}</textarea>
                 <button type="submit" name="action" value="translate">Traducir</button>
                 <button type="submit" name="action" value="clear">Limpiar</button>
             </div>
@@ -14,6 +14,7 @@
                 <p>La frase traducida es: {{ frase_jp }}</p>
                 <input type="hidden" name="frase_jp" value={{frase_jp}}>
 
+                <p>Categoría:</p>
                 <select name="categoria_id" id="categoria_id">
                     <option value="">-----</option>
                     {% for categoria in categorias %}

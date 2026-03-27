@@ -1,12 +1,22 @@
 {% extends "phrases/base.html" %}
 {% block content %}
     <h1>Editando la frase {{registro}}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <section>
+            <p>Frase en Español: </p><textarea name="frase_esp_mod">{{registro.texto_esp}}</textarea>
+            <p>Frase en Japonés: </p><textarea name="frase_jp_mod">{{registro.texto_jp}}</textarea>
+            <P>Categoría: </P>
+            <select name="categoria_mod">
+                {% for categoria in categorias %}
+                    <option value={{categoria.id}} {% if categoria.id == registro.categoria.id %} selected {% endif %}>{{categoria.titulo}}</option>
+                {% endfor %}
+            </select>
+            <p>Nota: </p><textarea name="nota_mod">{{registro.nota}}</textarea>
+            <p>Fecha del registro: {{registro.fecha}}</p>
 
-    <section>
-        <p>Frase en español: {{registro.texto_esp}}</p>
-        <p>Frase en Japonés: {{registro.texto_jp}}</p>
-        <p>Categoría: {{registro.categoria}}</p>
-        <p>Nota: {{registro.nota}}</p>
-        <p>Fecha del registro: {{registro.fecha}}</p>
-    </section>
+            <button type="submit" name="action" value="save_changes">Guardar los cambios</button>
+        </section>    
+    </form>
+    
 {% endblock content  %}

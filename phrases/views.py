@@ -4,10 +4,11 @@ from .services import translate_text
 from .models import Categoria, Frase
 from django.db.models import Q
 
+CATEGORIA = Categoria.objects.all()
+
 def main_page(request):
     frase_esp = ""
     frase_jp = ""
-    categoria = Categoria.objects.all()
     notas = ""
     categoria_elegida = ""
     
@@ -40,11 +41,10 @@ def main_page(request):
         {"frase_jp": frase_jp,
         "frase_esp": frase_esp,
         "notas": notas,
-        "categorias": categoria})
+        "categorias": CATEGORIA})
 
 
 def consulta_datos(request):
-    categoria = Categoria.objects.all()
     registros = Frase.objects.all()
     categoria_id = request.GET.get("filtro_categoria")
     orden = request.GET.get("orden_elegido", "DESC")
@@ -83,12 +83,28 @@ def consulta_datos(request):
     
 
     
-    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
+    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": CATEGORIA, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
 
 
 
 def editar_datos(request, registro_id):
 
     registro_seleccionado = get_object_or_404(Frase, id=registro_id)
-    
-    return render(request, "phrases/editar_datos.html", {"registro": registro_seleccionado })
+
+    if request.method=="POST" and request.POST.get("action") == "save_changes":
+        frase_esp_mod = request.POST.get("frase_esp_mod")
+        frase_jp_mod = request.POST.get("frase_jp_mod")
+        categoria_mod = request.POST.get("categoria_mod")
+        notas_mod = request.POST.get("nota_mod")
+
+        if frase_esp_mod != "" and frase_jp_mod != "" and categoria_mod != "":
+            registro_seleccionado.texto_esp = frase_esp_mod
+            registro_seleccionado.texto_jp = frase_jp_mod
+            registro_seleccionado.categoria_id = int(categoria_mod)
+            registro_seleccionado.nota = notas_mod
+            registro_seleccionado.save()
+
+            return redirect("consulta_datos")
+
+
+    return render(request, "phrases/editar_datos.html", {"registro": registro_seleccionado, "categorias": CATEGORIA})

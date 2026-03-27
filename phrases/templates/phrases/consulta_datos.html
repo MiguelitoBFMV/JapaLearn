@@ -30,7 +30,8 @@
             {% for registro in registros %}
                 <form method="POST">
                     {% csrf_token %}
-                    <p>Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}} | 
+                    <p>{{forloop.counter}}.
+                    Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}} | 
                     <a href='{% url "editar_datos" registro.id %}'>Ir a editar los datos</a>| <button type="submit" name="action" value="delete" onclick="return confirm('¿Seguro que quieres eliminar?')">Eliminar</button></p>
                     <input type="hidden" name="registro_id" value={{registro.id}}>
                 </form>
