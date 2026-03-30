@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings  
 
 
 def crear_sin_categoria():
@@ -15,6 +16,7 @@ class Frase(models.Model):
     texto_jp = models.TextField()
     categoria = models.ForeignKey(Categoria, on_delete=models.SET(crear_sin_categoria), related_name="Frases")
     nota = models.TextField(blank=True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .services import translate_text
 from .models import Categoria, Frase
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 CATEGORIA = Categoria.objects.all()
 
@@ -33,7 +34,8 @@ def main_page(request):
                     texto_esp = frase_esp,
                     texto_jp = frase_jp,
                     categoria = categoria_elemento,
-                    nota = notas
+                    nota = notas,
+                    usuario = request.user
                 )
 
 
@@ -44,6 +46,7 @@ def main_page(request):
         "categorias": CATEGORIA})
 
 
+@login_required
 def consulta_datos(request):
     registros = Frase.objects.all()
     categoria_id = request.GET.get("filtro_categoria")
@@ -86,7 +89,7 @@ def consulta_datos(request):
     return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": CATEGORIA, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
 
 
-
+@login_required
 def editar_datos(request, registro_id):
 
     registro_seleccionado = get_object_or_404(Frase, id=registro_id)
