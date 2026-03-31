@@ -1,11 +1,10 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Registro de Usuario</title>
     <style>
         body {
             display: flex;
@@ -115,31 +114,45 @@
             margin-bottom: 15px;
             text-align: center;
         }
+
+        .error-message {
+            color: #ff6b6b;
+        }
     </style>
 </head>
 <body>
     <video autoplay muted loop playsinline width="800" id="bg-video">
-       <source src="{% static 'phrases/videos/AtarashiiGakko.mp4' %}">
+       <source src="{% static 'phrases/videos/simdiyh.mp4' %}">
     </video>
     <div class="container">
-        <h2>Inicio de Sesión</h2>
-        {% if form.errors %}
-            <p class="error-message">Usuario o contraseña incorrectos</p>
-        {% endif %}
+        <h2>Crear una cuenta</h2>
         <form method="post">
             {% csrf_token %}
             <div class="input-group">
                 <label>Nombre de Usuario</label>
                 <input type="text" placeholder="Enter Username" name="username">
             </div>
+            {% for error in form.username.errors %}
+                <p class="error-message">{{ error }}</p>
+            {% endfor %}
             <div class="input-group">
                 <label>Contraseña</label>
-                <input type="password" placeholder="Enter Password" name="password">
+                <input type="password" placeholder="Enter Password" name="password1">
             </div>
-            <button class="submit-btn">Iniciar Sesión</button>
+            {% for error in form.password1.errors %}
+                <p class="error-message">{{ error }}</p>
+            {% endfor %}
+            <div class="input-group">
+                <label>Confirmar contraseña</label>
+                <input type="password" placeholder="Enter Password" name="password2">
+            </div>
+            {% for error in form.password2.errors %}
+                <p class="error-message">{{ error }}</p>
+            {% endfor %}
+            <button class="submit-btn">Crear la cuenta</button>
         </form>
         <div class="footer">
-            <a href={% url "registro_usuario" %}>Registrarse</a>
+            <a href={% url "login" %}>¿Ya tienes una cuenta? Inicia Sesión aquí</a>
         </div>
     </div>
 </body>

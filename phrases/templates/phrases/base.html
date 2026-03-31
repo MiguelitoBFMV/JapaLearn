@@ -11,10 +11,23 @@
     <header>
         <h1>JAPALEARN</h1>
         <a href={% url "consulta_datos" %}>Consultar Frases</a>
+        {% if request.user.is_authenticated %}
+            <p>Hola {{user}}</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Cerrar Sesión</button>
+            </form>
+        {% else %}
+            <a href={% url "login" %}>Iniciar Sesión</a>
+        {% endif %}
     </header>
     
     <section>
         {% block content %}{% endblock content %}
     </section>
+
+    <footer>
+        <p>Hecho por Miguel Varas</p>
+    </footer>
 </body>
 </html>

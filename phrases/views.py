@@ -1,9 +1,11 @@
-from django.http import HttpResponse
+
 from django.shortcuts import redirect, render, get_object_or_404
 from .services import translate_text
 from .models import Categoria, Frase
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+
 
 CATEGORIA = Categoria.objects.all()
 
@@ -23,6 +25,8 @@ def main_page(request):
             frase_esp = ""
             frase_jp = ""
         elif accion == "save":
+            if not request.user.is_authenticated:
+                return redirect("login")
             frase_esp = request.POST.get("frase_esp", "")
             frase_jp = request.POST.get("frase_jp", "")
             notas = request.POST.get("notas")
@@ -48,7 +52,7 @@ def main_page(request):
 
 @login_required
 def consulta_datos(request):
-    registros = Frase.objects.all()
+    registros = Frase.objects.filter(usuario=request.user)
     categoria_id = request.GET.get("filtro_categoria")
     orden = request.GET.get("orden_elegido", "DESC")
     frase_eliminada = ""
@@ -59,12 +63,12 @@ def consulta_datos(request):
         accion = request.POST.get("action")
         if accion == "delete":
             frase_eliminada = request.POST.get("registro_id")
-            Frase.objects.filter(id=frase_eliminada).delete()
+            Frase.objects.filter(id=frase_eliminada, usuario=request.user).delete()
             return redirect("consulta_datos")
         
     # METHOD GET   
     if categoria_id:
-        registros = Frase.objects.filter(categoria=categoria_id)
+        registros = registros.filter(categoria=categoria_id)
         categoria_id = int(categoria_id)
 
     # Filtro de orden
@@ -82,9 +86,6 @@ def consulta_datos(request):
     # Limpiar los filtros
     if accion == "reset":
         return redirect("consulta_datos")
-
-    
-
     
     return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": CATEGORIA, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
 
@@ -92,7 +93,7 @@ def consulta_datos(request):
 @login_required
 def editar_datos(request, registro_id):
 
-    registro_seleccionado = get_object_or_404(Frase, id=registro_id)
+    registro_seleccionado = get_object_or_404(Frase, id=registro_id, usuario=request.user)
 
     if request.method=="POST" and request.POST.get("action") == "save_changes":
         frase_esp_mod = request.POST.get("frase_esp_mod")
@@ -111,3 +112,18 @@ def editar_datos(request, registro_id):
 
 
     return render(request, "phrases/editar_datos.html", {"registro": registro_seleccionado, "categorias": CATEGORIA})
+
+
+def registro_usuario(request):
+
+
+    if request.method=="POST":
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = UserCreationForm()
+
+    return render(request, "phrases/registro.html", {"form": form})
