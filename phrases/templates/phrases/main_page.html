@@ -1,36 +1,96 @@
 {% extends "phrases/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'phrases/css/main_page.css' %}">    
+{% endblock %}
+
+
 {% block content %}
     
-    <h1>JapaLearn - Ingresa, Traduce, Registra, Consulta</h1>
-    <section>
-        <form method="POST">
+<div class="main-page-bg"></div>
+
+<section class="translator-wrapper">
+    <div class="translator-card">
+        <div class="translator-header">
+            <h1>Traductor Español → Japonés</h1>
+            <p>Escribe una frase, tradúcela y guárdala en tu biblioteca personal.</p>
+        </div>
+
+        <form method="POST" class="translator-form">
             {% csrf_token %}
-            <div>
-                <textarea name="frase_esp">{{frase_esp}}</textarea>
-                <button type="submit" name="action" value="translate">Traducir</button>
-                <button type="submit" name="action" value="clear">Limpiar</button>
+
+            <div class="form-group">
+                <label for="frase_esp">Texto en español</label>
+                <textarea
+                    id="frase_esp"
+                    name="frase_esp"
+                    placeholder="Escribe el texto en español aquí..."
+                    class="main-textarea"
+                >{{ frase_esp }}</textarea>
             </div>
 
-            <div>
-                <p>La frase traducida es: {{ frase_jp }}</p>
-                <input type="hidden" name="frase_jp" value={{frase_jp}}>
+            <div class="action-row">
+                <button type="submit" name="action" value="translate" class="primary-btn">
+                    Traducir
+                </button>
 
-                <p>Categoría:</p>
-                <select name="categoria_id" id="categoria_id">
-                    <option value="">-----</option>
-                    {% for categoria in categorias %}
-                        <option value={{categoria.id}}>{{categoria.titulo}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div>
-                <h4>Nota:</h4>
-                <textarea name="notas">{{ notas }}</textarea>
+                <button type="submit" name="action" value="clear" class="secondary-btn">
+                    Limpiar
+                </button>
             </div>
 
-            <button type="submit" name="action" value="save">Guardar</button>
+            {% if mensaje_error %}
+                <div class="error-box">
+                    {{ mensaje_error }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label>Traducción</label>
+                <div class="translation-box">
+                    {% if frase_jp %}
+                        {{ frase_jp }}
+                    {% else %}
+                        <span class="placeholder-text">Aquí aparecerá la traducción al japonés.</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <input type="hidden" name="frase_jp" value="{{ frase_jp }}">
+
+            <div class="bottom-grid">
+                <div class="form-group">
+                    <label for="categoria_id">Categoría</label>
+                    <select name="categoria_id" id="categoria_id" class="custom-select">
+                        <option value="">Selecciona una categoría</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}"
+                                {% if categoria.id|stringformat:"s" == categoria_elegida %}selected{% endif %}>
+                                {{ categoria.titulo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notas">Nota</label>
+                    <textarea
+                        id="notas"
+                        name="notas"
+                        placeholder="Agrega una nota opcional..."
+                        class="notes-textarea"
+                    >{{ notas }}</textarea>
+                </div>
+            </div>
+
+            <div class="save-row">
+                <button type="submit" name="action" value="save" class="save-btn">
+                    Guardar
+                </button>
+            </div>
         </form>
-    </section>
+    </div>
+</section>
 
 {% endblock content %}

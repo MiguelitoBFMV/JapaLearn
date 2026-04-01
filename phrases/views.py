@@ -14,6 +14,7 @@ def main_page(request):
     frase_jp = ""
     notas = ""
     categoria_elegida = ""
+    mensaje_error = ""
     
     if request.method=="POST":
         accion = request.POST.get("action")
@@ -21,6 +22,9 @@ def main_page(request):
         if accion == "translate":
             frase_esp = request.POST.get("frase_esp", "")
             frase_jp = translate_text(frase_esp)
+            if frase_jp == None:
+                mensaje_error="Error al traducir, Intente más tarde."
+                frase_jp = ""
         elif accion == "clear":
             frase_esp = ""
             frase_jp = ""
@@ -47,7 +51,8 @@ def main_page(request):
         {"frase_jp": frase_jp,
         "frase_esp": frase_esp,
         "notas": notas,
-        "categorias": CATEGORIA})
+        "categorias": CATEGORIA,
+        "mensaje_error": mensaje_error})
 
 
 @login_required

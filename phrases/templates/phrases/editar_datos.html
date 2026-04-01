@@ -1,22 +1,75 @@
 {% extends "phrases/base.html" %}
-{% block content %}
-    <h1>Editando la frase {{registro}}</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <section>
-            <p>Frase en Español: </p><textarea name="frase_esp_mod">{{registro.texto_esp}}</textarea>
-            <p>Frase en Japonés: </p><textarea name="frase_jp_mod">{{registro.texto_jp}}</textarea>
-            <P>Categoría: </P>
-            <select name="categoria_mod">
-                {% for categoria in categorias %}
-                    <option value={{categoria.id}} {% if categoria.id == registro.categoria.id %} selected {% endif %}>{{categoria.titulo}}</option>
-                {% endfor %}
-            </select>
-            <p>Nota: </p><textarea name="nota_mod">{{registro.nota}}</textarea>
-            <p>Fecha del registro: {{registro.fecha}}</p>
+{% load static %}
 
-            <button type="submit" name="action" value="save_changes">Guardar los cambios</button>
-        </section>    
-    </form>
-    
-{% endblock content  %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'phrases/css/editar_datos.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="editar-wrapper">
+    <div class="editar-card">
+        <div class="editar-header">
+            <h1>Editar frase</h1>
+            <p>Modifica el contenido de tu registro y guarda los cambios.</p>
+        </div>
+
+        <form method="POST" class="editar-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="frase_esp_mod">Frase en español</label>
+                <textarea
+                    id="frase_esp_mod"
+                    name="frase_esp_mod"
+                    class="main-textarea"
+                    placeholder="Edita la frase en español..."
+                >{{ registro.texto_esp }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="frase_jp_mod">Frase en japonés</label>
+                <textarea
+                    id="frase_jp_mod"
+                    name="frase_jp_mod"
+                    class="main-textarea jp-textarea"
+                    placeholder="Edita la frase en japonés..."
+                >{{ registro.texto_jp }}</textarea>
+            </div>
+
+            <div class="bottom-grid">
+                <div class="form-group">
+                    <label for="categoria_mod">Categoría</label>
+                    <select name="categoria_mod" id="categoria_mod" class="custom-select">
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}"
+                                {% if categoria.id == registro.categoria.id %}selected{% endif %}>
+                                {{ categoria.titulo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="nota_mod">Nota</label>
+                    <textarea
+                        id="nota_mod"
+                        name="nota_mod"
+                        class="notes-textarea"
+                        placeholder="Edita la nota..."
+                    >{{ registro.nota }}</textarea>
+                </div>
+            </div>
+
+            <div class="editar-actions">
+                <button type="submit" name="action" value="save_changes" class="primary-btn">
+                    Guardar cambios
+                </button>
+
+                <a href="{% url 'consulta_datos' %}" class="secondary-link">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock content %}

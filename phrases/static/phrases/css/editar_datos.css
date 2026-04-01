@@ -1,0 +1,174 @@
+.editar-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 150px 20px 24px;
+}
+
+.editar-card {
+    width: 100%;
+    max-width: 980px;
+    margin-top: 36px;
+    background: rgba(20, 24, 37, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(12px);
+    padding: 28px;
+    color: #f3f4f6;
+}
+
+.editar-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.editar-header h1 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+}
+
+.editar-header p {
+    margin: 0;
+    color: #c2c8d6;
+}
+
+.editar-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #e7eaf3;
+}
+
+.main-textarea,
+.notes-textarea,
+.custom-select {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5f7fb;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.main-textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.jp-textarea {
+    min-height: 120px;
+}
+
+.notes-textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.main-textarea::placeholder,
+.notes-textarea::placeholder {
+    color: #aeb6c8;
+}
+
+.custom-select option {
+    background: #1c2233;
+    color: #f5f7fb;
+}
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.registro-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.meta-categoria {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(100, 149, 237, 0.15);
+    border: 1px solid rgba(100, 149, 237, 0.3);
+    color: #8fb8ef;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.meta-fecha {
+    color: #9aa3b2;
+    opacity: 0.8;
+    font-size: 0.92rem;
+}
+
+.editar-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.primary-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, #5e8ecb, #2f5f9d);
+    color: white;
+}
+
+.secondary-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #dbe5f3;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+@media (max-width: 768px) {
+    .editar-card {
+        padding: 22px;
+    }
+
+    .editar-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .editar-actions {
+        flex-direction: column;
+    }
+
+    .primary-btn,
+    .secondary-link {
+        width: 100%;
+    }
+}

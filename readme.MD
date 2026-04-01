@@ -1,68 +1,63 @@
 # JapaLearn
 
-## 📌 Descripción
+JapaLearn es una aplicación web desarrollada con Django para apoyar el aprendizaje del japonés mediante el registro de frases personales.
 
-JapaLearn es una aplicación web orientada al aprendizaje del japonés, que permite registrar frases de interés de forma estructurada.
-
-El usuario puede ingresar una frase en español, traducirla al japonés mediante una API externa, y almacenarla junto a información adicional como categorías y notas personales. Posteriormente, es posible consultar estos registros para reforzar el aprendizaje.
-
-El proyecto está desarrollado con Django (Python) e integra servicios de traducción mediante Google Cloud Translation API.
+Permite escribir frases en español, traducirlas al japonés usando Google Cloud Translation API y guardarlas organizadas por categoría y notas, todo dentro de un sistema de usuarios con datos separados.
 
 ---
 
-## 🚀 Funcionalidades
+## Características principales
 
-- Traducción de frases desde español a japonés mediante API  
-- Registro de frases en una base de datos  
-- Clasificación de frases por categorías  
-- Posibilidad de añadir notas personalizadas a cada registro  
-- Consulta de frases guardadas  
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-- Python  
-- Django  
-- PostgreSQL  
-- HTML / CSS  
-- Google Cloud Translation API  
+- Traducción de frases (ES → JP)
+- Registro de frases en base de datos
+- Clasificación por categorías
+- Notas personales por frase
+- Búsqueda y filtrado de registros
+- Edición y eliminación de frases
+- Registro de usuarios
+- Login y logout
+- Separación de datos por usuario
 
 ---
 
-## ⚙️ Instalación
+## Tecnologías utilizadas
 
-### Requisitos previos
+- Python
+- Django
+- PostgreSQL
+- HTML / CSS
+- Google Cloud Translation API
 
-Antes de comenzar, asegúrate de tener instalado:
+---
 
-- Python 3.12 o superior  
-- PostgreSQL  
+## Requisitos
 
-> Este proyecto fue desarrollado utilizando Python 3.12.10.
+- Python 3.12 o superior
+- PostgreSQL
+- Git
+
+---
+
+## Instalación
 
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/MiguelitoBFMV/JapaLearn.git
 cd JapaLearn
 ```
 
-### 2. Crear y activar un entorno virtual
+### 2. Crear entorno virtual
 
+#### Windows
 ```bash
 python -m venv venv
-```
-
-Activar entorno virtual:
-
-**Windows**
-```bash
 venv\Scripts\activate
 ```
 
-**Linux / macOS**
+#### Linux / macOS
 ```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
 
@@ -72,59 +67,113 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Configurar variables de entorno
+---
 
-Crea un archivo `.env` en la raíz del proyecto y define las variables necesarias para la conexión a la base de datos.
+## Variables de entorno
 
-Ejemplo:
+Crea un archivo `.env` en la raíz del proyecto.
+
+### Base de datos
 
 ```env
-DB_NAME=nombre_base_de_datos
-DB_USER=usuario
-DB_PASSWORD=contraseña
-DB_HOST=localhost
-DB_PORT=5432
+PGDATABASE=nombre_db
+PGUSER=usuario
+PGPASSWORD=password
+PGHOST=localhost
+PGPORT=5432
 ```
 
-### 5. Configurar Google Cloud Translation API
+### Django
 
-Para habilitar la traducción automática:
+```env
+SECRET_KEY=tu_secret_key
+DEBUG=True
+```
 
-- Crear un proyecto en Google Cloud  
-- Habilitar **Google Cloud Translation API**  
-- Generar y descargar las credenciales en formato JSON  
-- Configurar la ruta a las credenciales en el entorno (por ejemplo, mediante variable de entorno)  
+### Google Cloud API
 
-### 6. Aplicar migraciones
+```env
+GOOGLE_APPLICATION_CREDENTIALS=ruta/a/credenciales.json
+```
+
+---
+
+## Migraciones
 
 ```bash
 python manage.py migrate
 ```
 
-### 7. Ejecutar el servidor de desarrollo
+Crear superusuario (opcional):
+
+```bash
+python manage.py createsuperuser
+```
+
+---
+
+## Ejecutar el proyecto
 
 ```bash
 python manage.py runserver
 ```
 
-Luego abre el navegador en:
+Abrir en navegador:
 
+```text
 http://127.0.0.1:8000/
+```
 
 ---
 
-## ▶️ Uso
+## Flujo de uso
 
-1. Accede a la aplicación desde el navegador  
-2. Ingresa una frase en español  
-3. Traduce la frase al japonés  
-4. Guarda la frase junto a su categoría y notas opcionales  
-5. Consulta tus frases guardadas para reforzar el aprendizaje  
+1. Escribir una frase en español  
+2. Traducirla al japonés  
+3. Iniciar sesión o registrarse  
+4. Guardar la frase con categoría y nota  
+5. Consultar, filtrar, editar o eliminar tus frases  
 
 ---
 
-## 🔮 Futuras mejoras
+## Estructura del proyecto
 
-- Mejora del diseño y experiencia de usuario 
-- Implementación de traducción del Japonés al Español (posibilidad)
-- Sistema de autenticación de usuarios  (posibilidad)
+```text
+JapaLearn/
+├── japalearn/
+├── phrases/
+│   ├── templates/
+│   ├── models.py
+│   ├── views.py
+│   ├── services.py
+│   └── admin.py
+├── manage.py
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Estado del proyecto
+
+- Sistema de autenticación completo  
+- CRUD funcional de frases  
+- Integración con API de traducción  
+- Separación de datos por usuario  
+
+---
+
+## Mejoras futuras
+
+- Manejo de errores en la API de traducción  
+- Mensajes de feedback al usuario (éxito/error)  
+- Mejora de experiencia de usuario (UX/UI)  
+
+---
+
+## Autor
+
+Desarrollado por **Miguel Varas Sánchez**
+
+GitHub:
+https://github.com/MiguelitoBFMV/JapaLearn

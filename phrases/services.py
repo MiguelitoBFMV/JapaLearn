@@ -4,11 +4,12 @@ def translate_text(texto_esp):
 
     translate_client = translate.Client()
 
+    try:
+        return translate_client.translate(
+            values = texto_esp,
+            target_language="ja",
+            source_language="es"
+        )['translatedText']
 
-    texto_jap = translate_client.translate(
-        values = texto_esp,
-        target_language="ja",
-        source_language="es"
-    )
-
-    return texto_jap['translatedText']
+    except Exception:
+        return None

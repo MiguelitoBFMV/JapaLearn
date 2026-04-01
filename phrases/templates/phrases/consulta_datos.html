@@ -1,43 +1,109 @@
 {% extends "phrases/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'phrases/css/consulta_datos.css' %}">
+{% endblock %}
+
 {% block content %}
-    <h1>Consulta los datos registrados</h1>
+<section class="consulta-wrapper">
+    <div class="consulta-card">
+        <div class="consulta-header">
+            <h1>Consulta tus frases registradas</h1>
+            <p>Busca, filtra, revisa y edita tus frases guardadas.</p>
+        </div>
 
-    <section>
-    <h3>Filtrar por categoría:</h3>
-    <form method="GET">
-        <select name="filtro_categoria">
-            <option value="">Sin filtro</option>
-            {% for categoria in categorias %}
-                <option value={{categoria.id}} {% if categoria.id == categoria_id %} selected {% endif %}>{{categoria.titulo}}</option>
-            {% endfor %}
-        </select>
+        <form method="GET" class="filters-form">
+            <div class="filters-grid">
+                <div class="form-group">
+                    <label for="filtro_categoria">Categoría</label>
+                    <select name="filtro_categoria" id="filtro_categoria" class="custom-select">
+                        <option value="">Sin filtro</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}"
+                                {% if categoria.id == categoria_id %}selected{% endif %}>
+                                {{ categoria.titulo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-        <select name="orden_elegido">
-            <option value="ASC" {% if "ASC" == orden %} selected {% endif %}>Más antiguos primero</option>
-            <option value="DESC" {% if "DESC" == orden %} selected {% endif %}>Más recientes primero</option>
-        </select>
+                <div class="form-group">
+                    <label for="orden_elegido">Orden</label>
+                    <select name="orden_elegido" id="orden_elegido" class="custom-select">
+                        <option value="DESC" {% if orden == "DESC" %}selected{% endif %}>Más recientes primero</option>
+                        <option value="ASC" {% if orden == "ASC" %}selected{% endif %}>Más antiguas primero</option>
+                    </select>
+                </div>
 
-        <button type="submit" name="action" value="filter">Filtrar</button> |
+                <div class="form-group search-group">
+                    <label for="busqueda">Búsqueda</label>
+                    <input
+                        type="text"
+                        name="busqueda"
+                        id="busqueda"
+                        value="{{ valor_buscado }}"
+                        placeholder="Buscar frase o nota..."
+                        class="search-input"
+                    >
+                </div>
+            </div>
 
-        <input type="text" name="busqueda" value={{valor_buscado}}>&#x1F50D;
+            <div class="filters-actions">
+                <button type="submit" class="primary-btn">Filtrar</button>
+                <a href="{% url 'consulta_datos' %}" class="secondary-link">Limpiar filtros</a>
+            </div>
+        </form>
 
-        <button type="submit" name="action" value="reset">Limpiar Filtros</button>
+        <div class="results-section">
+            {% if registros %}
+                <div class="results-list">
+                    {% for registro in registros %}
+                        <article class="registro-item">
+                            <div class="registro-content">
+                                <div class="registro-row">
+                                    <span class="registro-label">Español</span>
+                                    <p>{{ registro.texto_esp }}</p>
+                                </div>
 
-    </form>
-    </section>
+                                <div class="registro-row">
+                                    <span class="registro-label">Japonés</span>
+                                    <p>{{ registro.texto_jp }}</p>
+                                </div>
 
-        <section>
-            {% for registro in registros %}
-                <form method="POST">
-                    {% csrf_token %}
-                    <p>{{forloop.counter}}.
-                    Frase Español: {{registro.texto_esp}} | Frase Japonés: {{registro.texto_jp}} | Categoría: {{registro.categoria}} | Notas: {{registro.nota}} | 
-                    <a href='{% url "editar_datos" registro.id %}'>Ir a editar los datos</a>| <button type="submit" name="action" value="delete" onclick="return confirm('¿Seguro que quieres eliminar?')">Eliminar</button></p>
-                    <input type="hidden" name="registro_id" value={{registro.id}}>
-                </form>
-            {% endfor %}
-        </section>
-    
+                                <div class="meta-info">
+                                    <span class="meta-categoria">{{ registro.categoria }}</span>
+                                    <span class="meta-fecha">{{ registro.fecha|date:"d/m/Y H:i" }}</span>
+                                </div>
 
-    <a href={% url "main_page" %}>Volver a la página principal</a>
+                                {% if registro.nota %}
+                                    <div class="registro-note">
+                                        <strong>Nota:</strong>
+                                        <p>{{ registro.nota }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="registro-actions">
+                                <a href="{% url 'editar_datos' registro.id %}" class="edit-link">Editar</a>
+
+                                <form method="POST" class="delete-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="registro_id" value="{{ registro.id }}">
+                                    <button type="submit" name="action" value="delete" class="delete-btn">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No se encontraron frases con los filtros actuales.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock content %}

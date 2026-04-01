@@ -5,29 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JapaLearn</title>
-    <link rel="stylesheet" href={% static "phrases/styles.css" %}>
+    <link rel="stylesheet" href="{% static 'phrases/css/base.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
-<body class="h-full">
-    <header>
-        <h1>JAPALEARN</h1>
-        <a href={% url "consulta_datos" %}>Consultar Frases</a>
-        {% if request.user.is_authenticated %}
-            <p>Hola {{user}}</p>
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Cerrar Sesión</button>
-            </form>
-        {% else %}
-            <a href={% url "login" %}>Iniciar Sesión</a>
-        {% endif %}
-    </header>
-    
-    <section>
-        {% block content %}{% endblock content %}
-    </section>
+<body>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <div class="brand-block">
+                <h1 class="site-logo">JapaLearn</h1>
+            </div>
 
-    <footer>
-        <p>Hecho por Miguel Varas</p>
+            <nav class="site-nav">
+                <a href="{% url 'main_page' %}" class="nav-link">Inicio</a>
+
+                {% if request.resolver_match.url_name != 'consulta_datos' and request.resolver_match.url_name != 'editar_datos' %}
+                    <a href="{% url 'consulta_datos' %}" class="nav-link">Consultar frases</a>
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
+                    <span class="user-greeting">Hola {{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-btn">Cerrar sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">Iniciar sesión</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-main">
+        {% block content %}{% endblock content %}
+    </main>
+
+    <footer class="site-footer">
+        <p>Hecho por Miguel Varas Github: <a href="https://github.com/MiguelitoBFMV/JapaLearn" target="_blank" rel="noopener noreferrer">Ir al repositorio en Github</a></p>
     </footer>
 </body>
 </html>
