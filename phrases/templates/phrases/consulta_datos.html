@@ -23,6 +23,7 @@
                             <option value="{{ categoria.id }}"
                                 {% if categoria.id == categoria_id %}selected{% endif %}>
                                 {{ categoria.titulo }}
+
                             </option>
                         {% endfor %}
                     </select>
@@ -90,7 +91,7 @@
                                 <form method="POST" class="delete-form">
                                     {% csrf_token %}
                                     <input type="hidden" name="registro_id" value="{{ registro.id }}">
-                                    <button type="submit" name="action" value="delete" class="delete-btn">
+                                    <button type="submit" name="action" value="delete" class="delete-btn" onclick="return confirm('¿Eliminar este elemento?')">
                                         Eliminar
                                     </button>
                                 </form>

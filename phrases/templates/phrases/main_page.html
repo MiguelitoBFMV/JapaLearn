@@ -38,6 +38,16 @@
                 <button type="submit" name="action" value="clear" class="secondary-btn">
                     Limpiar
                 </button>
+
+                {% if messages %}
+                    <div class="messages-inline">
+                        {% for message in messages %}
+                            <div class="message {{ message.tags }}">
+                                ✔ {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
 
             {% if mensaje_error %}
@@ -45,6 +55,8 @@
                     {{ mensaje_error }}
                 </div>
             {% endif %}
+            
+
 
             <div class="form-group">
                 <label>Traducción</label>
@@ -63,7 +75,7 @@
                 <div class="form-group">
                     <label for="categoria_id">Categoría</label>
                     <select name="categoria_id" id="categoria_id" class="custom-select">
-                        <option value="">Selecciona una categoría</option>
+                        <option value="" {% if not categoria_elegida %}selected{% endif %}>Selecciona una categoría</option>
                         {% for categoria in categorias %}
                             <option value="{{ categoria.id }}"
                                 {% if categoria.id|stringformat:"s" == categoria_elegida %}selected{% endif %}>
@@ -72,7 +84,6 @@
                         {% endfor %}
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="notas">Nota</label>
                     <textarea

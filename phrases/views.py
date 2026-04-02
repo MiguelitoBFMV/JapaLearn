@@ -5,17 +5,27 @@ from .models import Categoria, Frase
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib import messages
 
-
-CATEGORIA = Categoria.objects.all()
 
 def main_page(request):
+    categoria = Categoria.objects.all()
+
     frase_esp = ""
     frase_jp = ""
     notas = ""
     categoria_elegida = ""
     mensaje_error = ""
     
+    if request.method == "GET":
+        pending = request.session.get("pending_phrase")
+        if pending:
+            frase_esp = pending.get("frase_esp", "")
+            frase_jp = pending.get("frase_jp", "")
+            notas = pending.get("notas", "")
+            categoria_elegida = pending.get("categoria_elegida", "")
+
     if request.method=="POST":
         accion = request.POST.get("action")
 
@@ -30,6 +40,11 @@ def main_page(request):
             frase_jp = ""
         elif accion == "save":
             if not request.user.is_authenticated:
+                request.session["pending_phrase"]={
+                    'frase_esp':request.POST.get("frase_esp", ""),
+                    'frase_jp': request.POST.get("frase_jp", ""),
+                    'notas' : request.POST.get("notas", ""),
+                    'categoria_elegida' : request.POST.get("categoria_id")}
                 return redirect("login")
             frase_esp = request.POST.get("frase_esp", "")
             frase_jp = request.POST.get("frase_jp", "")
@@ -46,17 +61,24 @@ def main_page(request):
                     usuario = request.user
                 )
 
+                request.session.pop("pending_phrase", None)
+
+                messages.success(request, "Frase guardada correctamente.")
+
+                return redirect("main_page")
 
     return render(request, "phrases/main_page.html",
         {"frase_jp": frase_jp,
         "frase_esp": frase_esp,
         "notas": notas,
-        "categorias": CATEGORIA,
+        "categorias": categoria,
+        "categoria_elegida": categoria_elegida,
         "mensaje_error": mensaje_error})
 
 
 @login_required
 def consulta_datos(request):
+    categoria = Categoria.objects.all()
     registros = Frase.objects.filter(usuario=request.user)
     categoria_id = request.GET.get("filtro_categoria")
     orden = request.GET.get("orden_elegido", "DESC")
@@ -92,12 +114,12 @@ def consulta_datos(request):
     if accion == "reset":
         return redirect("consulta_datos")
     
-    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": CATEGORIA, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
+    return render(request, "phrases/consulta_datos.html", {"registros": registros, "categorias": categoria, "categoria_id": categoria_id, "orden": orden, "valor_buscado": valor_buscado})
 
 
 @login_required
 def editar_datos(request, registro_id):
-
+    categoria = Categoria.objects.all()
     registro_seleccionado = get_object_or_404(Frase, id=registro_id, usuario=request.user)
 
     if request.method=="POST" and request.POST.get("action") == "save_changes":
@@ -116,7 +138,7 @@ def editar_datos(request, registro_id):
             return redirect("consulta_datos")
 
 
-    return render(request, "phrases/editar_datos.html", {"registro": registro_seleccionado, "categorias": CATEGORIA})
+    return render(request, "phrases/editar_datos.html", {"registro": registro_seleccionado, "categorias": categoria})
 
 
 def registro_usuario(request):
@@ -126,8 +148,10 @@ def registro_usuario(request):
         form = UserCreationForm(request.POST)
 
         if form.is_valid():
-            form.save()
-            return redirect("login")
+            usuario = form.save()
+            login(request, usuario)
+
+            return redirect("main_page")
     else:
         form = UserCreationForm()
 

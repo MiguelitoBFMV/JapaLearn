@@ -203,3 +203,37 @@
         width: 100%;
     }
 }
+
+.messages-inline {
+    margin-left: auto; /* lo empuja a la derecha */
+    display: flex;
+    align-items: center;
+}
+
+.message {
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    max-width: fit-content;
+    animation: fadeInOut 4s forwards;
+}
+
+@keyframes fadeInOut {
+    0% {opacity: 0; transform: translateY(-5px);}
+    10% {opacity: 1; transform: translateY(0);}
+    80% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    80% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.message.success {
+    background: rgba(46, 204, 113, 0.15);
+    color: #7ee2a8;
+    border: 1px solid rgba(46, 204, 113, 0.35);
+}
