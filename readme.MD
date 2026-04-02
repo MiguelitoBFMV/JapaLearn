@@ -141,6 +141,7 @@ http://127.0.0.1:8000/
 
 ## Estructura del proyecto
 
+```
 JapaLearn/
 ├── japalearn/
 ├── phrases/
@@ -153,7 +154,7 @@ JapaLearn/
 ├── manage.py
 ├── requirements.txt
 └── readme.MD
-
+```
 ---
 
 ## Estado del proyecto

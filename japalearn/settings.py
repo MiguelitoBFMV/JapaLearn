@@ -17,9 +17,9 @@ if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 INSTALLED_APPS = [
@@ -96,10 +96,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-"STATIC_URL = 'static/'"
-
 LOGIN_URL = "/login/"
 
 LOGIN_REDIRECT_URL = "/" 
-
-STATIC_ROOT = BASE_DIR/"staticfiles"

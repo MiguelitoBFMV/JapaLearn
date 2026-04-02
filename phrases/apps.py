@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class PrhasesConfig(AppConfig):
+class PhrasesConfig(AppConfig):
     name = 'phrases'
