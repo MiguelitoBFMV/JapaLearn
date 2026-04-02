@@ -9,5 +9,6 @@ def translate_text(texto_esp):
             source_language="es"
         )['translatedText']
 
-    except Exception:
+    except Exception as e:
+        print("Error en traducción:", e)
         return None
