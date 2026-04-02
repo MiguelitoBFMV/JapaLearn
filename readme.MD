@@ -6,6 +6,11 @@ Permite escribir una frase en español, traducirla al japonés usando Google Clo
 
 ---
 
+## Demo en vivo
+
+https://japalearn.onrender.com
+
+---
 ## Características
 
 - Traducción de frases de español a japonés
@@ -27,9 +32,10 @@ Permite escribir una frase en español, traducirla al japonés usando Google Clo
 
 - Python
 - Django
-- PostgreSQL
+- PostgreSQL (Supabase)
 - HTML / CSS
 - Google Cloud Translation API
+- Render (deploy)
 
 ---
 
